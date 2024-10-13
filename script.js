@@ -1,5 +1,4 @@
 const getComputerChoice = () => {
-	// Randomly return the words "rock", "paper", or "scissors".
 	const choices = ["rock", "paper", "scissors"];
 	const randomChoice = Math.floor(Math.random() * choices.length);
 	return choices[randomChoice];
@@ -33,30 +32,7 @@ const playGame = () => {
             1. Rock breaks scissors
             2. Scissors cuts paper
             3. Paper covers rock
-            
-            The human player always wins if these conditions are met:
-                If the human player selects rock and the computer selects scissors,
-                then the human player wins.
-    
-                If the human player selects paper and the computer selects rock,
-                then the human player wins.
-
-                If the human player selects scissors and the computer selects paper,
-                then the human player wins.
-            
-            Neither the human player or the computer will win if this condition is true:
-                If there is a tie between the human player and computer, then no one wins;
-                it's a tie.
-            
-            The computer always wins if these conditions are met:
-                If the human player selects rock and the computer selects paper,
-                then the computer player wins.
-        
-                If the human player selects paper and the computer selects scissors,
-                then the computer player wins.
-        
-                If the human player selects scissors and the computer selects rock, 
-                then the computer player wins.
+			4. If both players select the same choice, it's a tie.
         */
 		if (
 			(humanChoice === "rock" && computerChoice === "scissors") ||
@@ -90,7 +66,6 @@ const playGame = () => {
 		const computerSelection = getComputerChoice();
 		let winner = playRound(humanSelection, computerSelection);
 
-		// Determine who is the winner of each round and update the score accordingly.
 		switch (winner) {
 			case "human":
 				humanScore++;
