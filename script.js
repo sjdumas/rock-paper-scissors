@@ -1,88 +1,103 @@
+const buttons = document.querySelectorAll("button");
+const resultDiv = document.querySelector("#result");
+const score = document.querySelector("#score");
+const gameWinner = document.querySelector("#game-winner");
+const resetButton = document.querySelector("#reset-btn");
+
+let humanScore = 0;
+let computerScore = 0;
+
 const getComputerChoice = () => {
 	const choices = ["rock", "paper", "scissors"];
 	const randomChoice = Math.floor(Math.random() * choices.length);
 	return choices[randomChoice];
 };
 
-const getHumanChoice = () => {
-	let option = prompt(
-		"Type an option: rock, paper, or scissors: ",
-		""
-	).toLowerCase();
+const playRound = (humanChoice) => {
+	const computerChoice = getComputerChoice();
+	let roundResult;
+	/*
+		Game Rules:
+		1. Rock breaks scissors
+		2. Scissors cuts paper
+		3. Paper covers rock
+		4. If both players select the same choice, it's a tie.
+	*/
+	if (
+		(humanChoice === "rock" && computerChoice === "scissors") ||
+		(humanChoice === "paper" && computerChoice === "rock") ||
+		(humanChoice === "scissors" && computerChoice === "paper")
+	) {
+		humanScore++;
+		roundResult = `You win! ${capitalizeFirstLetter(
+			humanChoice
+		)} beats ${capitalizeFirstLetter(computerChoice)}.`;
+	} else if (humanChoice === computerChoice) {
+		roundResult = `It's a tie!`;
+	} else {
+		computerScore++;
+		roundResult = `You lose! ${capitalizeFirstLetter(
+			computerChoice
+		)} beats ${capitalizeFirstLetter(humanChoice)}.`;
+	}
 
-	switch (option) {
-		case "rock":
-		case "paper":
-		case "scissors":
-			return option;
+	resultDiv.textContent = roundResult;
+	score.textContent = `Your Score: ${humanScore} | Computer Score: ${computerScore}`;
 
-		default:
-			alert("You didn't pick a valid option. Please try again.");
-			return getHumanChoice(); // Ask the user again for valid input/choice.
+	if (humanScore === 5) {
+		gameWinner.textContent = "Awesome! You won the game.";
+		showResetButton();
+	} else if (computerScore === 5) {
+		gameWinner.textContent = "The computer won the game.";
+		showResetButton();
 	}
 };
 
-const playGame = () => {
-	let humanScore = 0;
-	let computerScore = 0;
+const capitalizeFirstLetter = (string) => {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
-	const playRound = (humanChoice, computerChoice) => {
-		/*
-            Game Rules:
-            1. Rock breaks scissors
-            2. Scissors cuts paper
-            3. Paper covers rock
-			4. If both players select the same choice, it's a tie.
-        */
-		if (
-			(humanChoice === "rock" && computerChoice === "scissors") ||
-			(humanChoice === "paper" && computerChoice === "rock") ||
-			(humanChoice === "scissors" && computerChoice === "paper")
-		) {
-			console.log(
-				`You win! ${
-					humanChoice.charAt(0).toUpperCase() + 
-                    humanChoice.slice(1)
-				} beats ${computerChoice}`
-			);
-			return "human";
-		} else if (humanChoice === computerChoice) {
-			console.log("It's a tie!");
-			return "tie";
-		} else {
-			console.log(
-				`You lose! ${
-					computerChoice.charAt(0).toUpperCase() +
-					computerChoice.slice(1)
-				} beats ${humanChoice}`
-			);
-			return "computer";
-		}
-	};
+const resetGame = () => {
+	humanScore = 0;
+	computerScore = 0;
+	score.textContent = `Your Score: ${humanScore} | Computer Score: ${computerScore}`;
+	gameWinner.textContent = "";
+};
 
-	// Play 5 rounds of the game.
-	for (let i = 0; i < 5; i++) {
-		const humanSelection = getHumanChoice();
-		const computerSelection = getComputerChoice();
-		let winner = playRound(humanSelection, computerSelection);
+const showResetButton = () => {
+	resetButton.style.display = "block";
+};
 
-		switch (winner) {
-			case "human":
-				humanScore++;
-				console.log(`You win round ${i + 1}`);
+const hideResetButton = () => {
+	resetButton.style.display = "none";
+};
+
+resetButton.addEventListener("click", () => {
+	resetGame();
+	hideResetButton();
+});
+
+buttons.forEach((button) => {
+	button.addEventListener("click", () => {
+		let playerSelection;
+
+		switch (button.id) {
+			case "rock-btn":
+				playerSelection = "rock";
 				break;
 
-			case "computer":
-				computerScore++;
-				console.log(`The computer wins round ${i + 1}`);
+			case "paper-btn":
+				playerSelection = "paper";
+				break;
+
+			case "scissors-btn":
+				playerSelection = "scissors";
 				break;
 
 			default:
-				console.log(`Round ${i + 1} is a tie.`);
 				break;
 		}
-	}
-	console.log(`Here are the final scores: You: ${humanScore}, Computer: ${computerScore}`);
-};
 
-playGame();
+		playRound(playerSelection);
+	});
+});
