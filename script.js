@@ -2,7 +2,7 @@ const buttons = document.querySelectorAll("button");
 const resultDiv = document.querySelector("#result");
 const score = document.querySelector("#score");
 const gameWinner = document.querySelector("#game-winner");
-const resetButton = document.querySelector("#reset-btn");
+const playAgainBtn = document.querySelector("#play-again-btn");
 
 let humanScore = 0;
 let computerScore = 0;
@@ -46,10 +46,10 @@ const playRound = (humanChoice) => {
 
 	if (humanScore === 5) {
 		gameWinner.textContent = "Awesome! You won the game.";
-		showResetButton();
+		showPlayAgainButton();
 	} else if (computerScore === 5) {
-		gameWinner.textContent = "The computer won the game.";
-		showResetButton();
+		gameWinner.textContent = "Sorry. The computer won the game.";
+		showPlayAgainButton();
 	}
 };
 
@@ -61,20 +61,21 @@ const resetGame = () => {
 	humanScore = 0;
 	computerScore = 0;
 	score.textContent = `Your Score: ${humanScore} | Computer Score: ${computerScore}`;
+	resultDiv.textContent = "";
 	gameWinner.textContent = "";
 };
 
-const showResetButton = () => {
-	resetButton.style.display = "block";
+const showPlayAgainButton = () => {
+	playAgainBtn.style.display = "block";
 };
 
-const hideResetButton = () => {
-	resetButton.style.display = "none";
+const hidePlayAgainButton = () => {
+	playAgainBtn.style.display = "none";
 };
 
-resetButton.addEventListener("click", () => {
+playAgainBtn.addEventListener("click", () => {
 	resetGame();
-	hideResetButton();
+	hidePlayAgainButton();
 });
 
 buttons.forEach((button) => {

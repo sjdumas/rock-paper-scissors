@@ -64,7 +64,7 @@ button:hover {
 	padding-top: 30px;
 }
 
-.reset-game {
+.play-again {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
